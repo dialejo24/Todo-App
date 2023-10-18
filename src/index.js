@@ -5,8 +5,16 @@ function addTodoItem(description) {
 }
 
 function removeTodoItem(id) {
+    todos_list.splice(getTodoItemPosition(id), 1);
+}
+
+function getTodoItem(id) {
+    return todos_list[getTodoItemPosition(id)];
+}
+
+function getTodoItemPosition(id) {
     let position = todos_list.map(todoItem => todoItem.getId()).indexOf(id);
-    todos_list.splice(position, 1);
+    return position;
 }
 
 function clearCompleted() { //remove all completed to-do items from todos_list
