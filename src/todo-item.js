@@ -10,6 +10,7 @@ function createTodoItem(description) {
         changeState,
         getState,
         getDescription,
+        getId,
     };
 }
 
