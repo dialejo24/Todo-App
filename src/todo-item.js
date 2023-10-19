@@ -1,8 +1,10 @@
 export {createTodoItem};
+let id = 1;
 
 function createTodoItem(description) {
 
     return {
+        id : id++,
         description,
         state : "active",
         changeState,
@@ -26,4 +28,8 @@ function getState() {
 
 function getDescription() {
     return this.description;
+}
+
+function getId() {
+    return this.id;
 }
