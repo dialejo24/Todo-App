@@ -1,3 +1,5 @@
+export {createTodoItem};
+
 function createTodoItem(description) {
 
     return {

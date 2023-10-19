@@ -1,7 +1,9 @@
+import { createTodoItem } from "./todo-item";
+
 let todos_list = []; //stores to-do items
 
 function addTodoItem(description) {
-    todos_list.push(description);
+    todos_list.push(createTodoItem(description));
 }
 
 function removeTodoItem(id) {
