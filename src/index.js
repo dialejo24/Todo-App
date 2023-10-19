@@ -1,4 +1,5 @@
 import { createTodoItem } from "./todo-item";
+import './style.css';
 
 let todos_list = []; //stores to-do items
 
