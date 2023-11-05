@@ -1,0 +1,83 @@
+:root {
+    --bright-blue: hsl(220, 98%, 61%);
+    --check-background: linear-gradient hsl(192, 100%, 67%) to hsl(280, 87%, 65%);
+
+    /* light theme */
+    --very-light-gray-l: hsl(0, 0%, 98%);
+    --very-light-grayish-blue-l: hsl(236, 33%, 92%);
+    --light-grayish-blue-l: hsl(233, 11%, 84%);
+    --dark-grayish-blue-l: hsl(236, 9%, 61%);
+    --very-dark-grayish-blue-l:  hsl(235, 19%, 35%);
+
+    /* Dark theme */
+    --very-dark-blue-d:  hsl(235, 21%, 11%);
+    --very-dark-desaturated-blue-d: hsl(235, 24%, 19%);
+    --light-grayish-blue-d:  hsl(234, 39%, 85%);
+    --light-grayish-blue-hover-d: hsl(236, 33%, 92%);
+    --dark-grayish-blue-d:  hsl(234, 11%, 52%);
+    --very-dark-grayish-blue-d: hsl(233, 14%, 35%);
+    --very-dark-grayish-blue-hover-d:  hsl(237, 14%, 26%);
+
+}
+
+@font-face {
+    font-family: 'Josefin Sans';
+    src: url("JosefinSans-VariableFont_wght.ttf");
+    font-style: normal;
+}
+
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+ul {
+    list-style-type: none;
+}
+
+a {
+    text-decoration: none;
+    color: var(--dark-grayish-blue-l);
+}
+
+input {
+    font-family: 'Josefin Sans', sans-serif;
+    color: var(--very-dark-grayish-blue-l);
+}
+
+.container {
+    min-height: 100vh;
+}
+
+.to_do {
+    width: 90%;
+    margin-inline: auto;
+}
+
+.todo_description {
+    color: var(--very-dark-grayish-blue-l);
+}
+
+.todo_state {
+    color:var(--light-grayish-blue-l);
+}
+
+.filtered {
+    color: var(--bright-blue);
+}
+
+.header {
+    background-color: darkblue;
+}
+
+.main_title {
+    color: var(--very-light-gray-l);
+    letter-spacing: 10px;
+}
