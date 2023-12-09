@@ -81,10 +81,6 @@ img[alt="toggle"] {
     color: var(--very-dark-grayish-blue-l);
 }
 
-.todo_state {
-    color:var(--light-grayish-blue-l);
-}
-
 .filtered {
     color: var(--bright-blue);
 }
@@ -209,6 +205,7 @@ img[alt="cross icon"] {
     display: flex;
     justify-content: space-between;
     padding: 1.2em 1em 1.2em 1.25em;
+    color: var(--dark-grayish-blue-l);
 }
 
 .todos_filter {
@@ -222,7 +219,9 @@ img[alt="cross icon"] {
 .todos_filter > ul {
     padding: 1em 1em 1em 1.25em;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 1.2em;
+    font-weight: bold;
 }
 
 .shadow {
