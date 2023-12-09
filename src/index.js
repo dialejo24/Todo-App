@@ -2,7 +2,7 @@ import './style.css';
 import iconMoonUrl from './images/icon-moon.svg';
 import iconCrossUrl from './images/icon-cross.svg';
 import iconCheckUrl from './images/icon-check.svg';
-import { addTodoItem } from './to-do';
+import { addTodoItem, removeTodoItem } from './to-do';
 
 const toggleIcon = document.querySelector("img[alt='toggle']");
 const textInput = document.querySelector("input[type='text']");
@@ -26,9 +26,13 @@ function addNewTodo(e) {
     }
 }
 
+function deleteTodo(e) {
+    removeTodoItem(e.target.attributes["data-id"].value);
+    todoItems.removeChild(e.target.parentElement.parentElement);
+}
+
 function createTodoComponent(description, id) {
     let div = document.createElement("div");
-    div.setAttribute("data-id", id);
     div.classList.add("todo_item");
 
     let wrapper = document.createElement("div");
@@ -46,6 +50,8 @@ function createTodoComponent(description, id) {
     let crossIcon = new Image();
     crossIcon.src = iconCrossUrl;
     crossIcon.setAttribute("alt", "cross icon");
+    crossIcon.setAttribute("data-id", id);
+    crossIcon.addEventListener("click", deleteTodo);
 
     cross.appendChild(crossIcon);
     wrapper.appendChild(circle);

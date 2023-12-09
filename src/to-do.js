@@ -17,7 +17,7 @@ function getTodoItem(id) {
 }
 
 function getTodoItemPosition(id) {
-    let position = todos_list.map(todoItem => todoItem.getId()).indexOf(id);
+    let position = todos_list.map(todoItem => todoItem.getId()).indexOf(Number(id));
     return position;
 }
 
@@ -25,4 +25,4 @@ function clearCompleted() { //remove all completed to-do items from todos_list
     todos_list = todos_list.filter(todoItem => todoItem.getState() == "active");
 }
 
-export {addTodoItem};
+export {addTodoItem, removeTodoItem};
