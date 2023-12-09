@@ -24,8 +24,12 @@ function getTodoItemPosition(id) {
     return position;
 }
 
+function getTodosActive() {
+    return todos_list.filter(todoItem => todoItem.getState() == "active").length;
+}
+
 function clearCompleted() { //remove all completed to-do items from todos_list
     todos_list = todos_list.filter(todoItem => todoItem.getState() == "active");
 }
 
-export {addTodoItem, removeTodoItem, changeTodoItemState};
+export {addTodoItem, removeTodoItem, changeTodoItemState, getTodosActive};

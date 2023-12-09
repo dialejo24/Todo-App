@@ -1,12 +1,12 @@
 import './style.css';
 import iconMoonUrl from './images/icon-moon.svg';
 import iconCrossUrl from './images/icon-cross.svg';
-import { addTodoItem, removeTodoItem, changeTodoItemState } from './to-do';
+import { addTodoItem, removeTodoItem, changeTodoItemState, getTodosActive } from './to-do';
 
 const toggleIcon = document.querySelector("img[alt='toggle']");
 const textInput = document.querySelector("input[type='text']");
 const todoItems = document.querySelector(".todo_items");
-
+const todosActive = document.querySelector(".amount");
 
 textInput.addEventListener("keydown", addNewTodo);
 
@@ -22,12 +22,14 @@ function addNewTodo(e) {
         let newTodoItemId = addTodoItem(e.target.value);
         createTodoComponent(e.target.value, newTodoItemId);
         e.target.value = "";
+        todosActive.textContent = getTodosActive();
     }
 }
 
 function deleteTodo(e) {
     removeTodoItem(e.target.attributes["data-id"].value);
     todoItems.removeChild(e.target.parentElement.parentElement);
+    todosActive.textContent = getTodosActive();
 }
 
 function updateTodoState(e) {
@@ -40,6 +42,7 @@ function updateTodoState(e) {
         e.target.className = "circle circle-unfilled";
         e.target.nextElementSibling.classList.remove("checked");
     }
+    todosActive.textContent = getTodosActive();
     
 }
 
