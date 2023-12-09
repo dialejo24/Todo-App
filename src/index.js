@@ -1,25 +1,63 @@
-import { createTodoItem } from "./todo-item";
 import './style.css';
+import iconMoonUrl from './images/icon-moon.svg';
+import iconCrossUrl from './images/icon-cross.svg';
+import iconCheckUrl from './images/icon-check.svg';
+import { addTodoItem } from './to-do';
 
-let todos_list = []; //stores to-do items
+const toggleIcon = document.querySelector("img[alt='toggle']");
+const textInput = document.querySelector("input[type='text']");
+const todoItems = document.querySelector(".todo_items");
 
-function addTodoItem(description) {
-    todos_list.push(createTodoItem(description));
+
+textInput.addEventListener("keydown", addNewTodo);
+
+setImageUrl(toggleIcon, iconMoonUrl);
+
+
+function setImageUrl(image, url) {
+    image.src = url;
 }
 
-function removeTodoItem(id) {
-    todos_list.splice(getTodoItemPosition(id), 1);
+function addNewTodo(e) {
+    if (e.key == "Enter" && !descriptionEmpty(e.target.value)) {
+        let newTodoItemId = addTodoItem(e.target.value);
+        createTodoComponent(e.target.value, newTodoItemId);
+        e.target.value = "";
+    }
 }
 
-function getTodoItem(id) {
-    return todos_list[getTodoItemPosition(id)];
+function createTodoComponent(description, id) {
+    let div = document.createElement("div");
+    div.setAttribute("data-id", id);
+    div.classList.add("todo_item");
+
+    let wrapper = document.createElement("div");
+    wrapper.classList.add("wrapper");
+
+    let circle = document.createElement("div");
+    circle.className = "circle circle-unfilled";
+
+    let paragraph = document.createElement("p");
+    paragraph.textContent = description;
+    paragraph.classList.add("todo_description");
+
+    let cross = document.createElement("div");
+    cross.classList.add("icon_cross");
+    let crossIcon = new Image();
+    crossIcon.src = iconCrossUrl;
+    crossIcon.setAttribute("alt", "cross icon");
+
+    cross.appendChild(crossIcon);
+    wrapper.appendChild(circle);
+    wrapper.appendChild(paragraph);
+
+    div.appendChild(wrapper);
+    div.appendChild(cross);
+
+    todoItems.appendChild(div);
+
 }
 
-function getTodoItemPosition(id) {
-    let position = todos_list.map(todoItem => todoItem.getId()).indexOf(id);
-    return position;
-}
-
-function clearCompleted() { //remove all completed to-do items from todos_list
-    todos_list = todos_list.filter(todoItem => todoItem.getState() == "active");
+function descriptionEmpty(description) {
+    return description.length == 0;
 }
