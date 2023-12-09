@@ -143,16 +143,18 @@ img[alt="toggle"] {
 
 .todo_item {
     padding: 1em 1em 1em 1.25em;
-    display: flex;
+    display: grid;
     justify-content: space-between;
     align-items: center;
+    grid-template-columns: 10fr 1fr;
     border-bottom: 1px solid var(--very-light-grayish-blue-l);
 }
 
 .wrapper {
-    display: flex;
+    display: grid;
     gap: .8em;
     align-items: center;
+    grid-template-columns: 1fr 15fr;
 }
 
 .circle {
@@ -195,6 +197,7 @@ img[alt="toggle"] {
 .icon_cross {
     display: flex;
     align-items: center;
+    justify-self: flex-end;
 }
 
 img[alt="cross icon"] {
