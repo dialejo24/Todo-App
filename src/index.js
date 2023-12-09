@@ -1,8 +1,7 @@
 import './style.css';
 import iconMoonUrl from './images/icon-moon.svg';
 import iconCrossUrl from './images/icon-cross.svg';
-import iconCheckUrl from './images/icon-check.svg';
-import { addTodoItem, removeTodoItem } from './to-do';
+import { addTodoItem, removeTodoItem, changeTodoItemState } from './to-do';
 
 const toggleIcon = document.querySelector("img[alt='toggle']");
 const textInput = document.querySelector("input[type='text']");
@@ -31,6 +30,19 @@ function deleteTodo(e) {
     todoItems.removeChild(e.target.parentElement.parentElement);
 }
 
+function updateTodoState(e) {
+    let todoState = changeTodoItemState(e.target.attributes["data-id"].value);
+    if (todoState == "completed") {
+        e.target.className = "circle circle-filled";
+        e.target.nextElementSibling.classList.add("checked");
+        
+    } else {
+        e.target.className = "circle circle-unfilled";
+        e.target.nextElementSibling.classList.remove("checked");
+    }
+    
+}
+
 function createTodoComponent(description, id) {
     let div = document.createElement("div");
     div.classList.add("todo_item");
@@ -40,6 +52,8 @@ function createTodoComponent(description, id) {
 
     let circle = document.createElement("div");
     circle.className = "circle circle-unfilled";
+    circle.setAttribute("data-id", id);
+    circle.addEventListener("click", updateTodoState);
 
     let paragraph = document.createElement("p");
     paragraph.textContent = description;

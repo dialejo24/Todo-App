@@ -12,8 +12,11 @@ function removeTodoItem(id) {
     todos_list.splice(getTodoItemPosition(id), 1);
 }
 
-function getTodoItem(id) {
-    return todos_list[getTodoItemPosition(id)];
+function changeTodoItemState(id) {
+    let todoItem = todos_list[getTodoItemPosition(id)];
+    todoItem.changeState();
+    console.log(todos_list);
+    return todoItem.getState();
 }
 
 function getTodoItemPosition(id) {
@@ -25,4 +28,4 @@ function clearCompleted() { //remove all completed to-do items from todos_list
     todos_list = todos_list.filter(todoItem => todoItem.getState() == "active");
 }
 
-export {addTodoItem, removeTodoItem};
+export {addTodoItem, removeTodoItem, changeTodoItemState};

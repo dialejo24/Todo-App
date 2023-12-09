@@ -162,6 +162,7 @@ img[alt="toggle"] {
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 
 .circle-unfilled {
@@ -170,6 +171,20 @@ img[alt="toggle"] {
 
 .circle-filled {
     background:  linear-gradient(-65deg,  hsl(280, 87%, 65%),hsl(192, 100%, 67%));
+}
+
+.circle-filled::before {
+    content: "";
+    width: 20px;
+    height: 20px;
+    background: url("./images/icon-check.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.checked {
+    text-decoration: line-through;
+    color: var(--light-grayish-blue-l);
 }
 
 .todo_state,
