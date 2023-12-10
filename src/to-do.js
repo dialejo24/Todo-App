@@ -29,7 +29,18 @@ function getTodosActive() {
 }
 
 function clearCompleted() { //remove all completed to-do items from todos_list
-    todos_list = todos_list.filter(todoItem => todoItem.getState() == "active");
+    let completedTodosId = new Set();
+    for (let i = 0; i < todos_list.length; i++) {
+        let todoItem = todos_list[i];
+        if (todoItem.getState() == "completed") {
+            removeTodoItem(todoItem.getId());
+            completedTodosId.add(todoItem.getId());
+            i--;
+        }
+    }
+
+    console.log(todos_list);
+    return completedTodosId;
 }
 
-export {addTodoItem, removeTodoItem, changeTodoItemState, getTodosActive};
+export {addTodoItem, removeTodoItem, changeTodoItemState, getTodosActive, clearCompleted};

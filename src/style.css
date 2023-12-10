@@ -208,6 +208,10 @@ img[alt="cross icon"] {
     color: var(--dark-grayish-blue-l);
 }
 
+.clear_completed {
+    cursor: pointer;
+}
+
 .todos_filter {
    border-radius: 5px;
    position: absolute;

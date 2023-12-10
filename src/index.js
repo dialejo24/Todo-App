@@ -1,14 +1,16 @@
 import './style.css';
 import iconMoonUrl from './images/icon-moon.svg';
 import iconCrossUrl from './images/icon-cross.svg';
-import { addTodoItem, removeTodoItem, changeTodoItemState, getTodosActive } from './to-do';
+import { addTodoItem, removeTodoItem, changeTodoItemState, getTodosActive, clearCompleted } from './to-do';
 
 const toggleIcon = document.querySelector("img[alt='toggle']");
 const textInput = document.querySelector("input[type='text']");
 const todoItems = document.querySelector(".todo_items");
 const todosActive = document.querySelector(".amount");
+const removeCompletedTodos = document.querySelector(".clear_completed");
 
 textInput.addEventListener("keydown", addNewTodo);
+removeCompletedTodos.addEventListener("click", deleteCompletedTodos);
 
 setImageUrl(toggleIcon, iconMoonUrl);
 
@@ -46,9 +48,19 @@ function updateTodoState(e) {
     
 }
 
+function deleteCompletedTodos() {
+    let ids = clearCompleted();
+    for (let i = 0; i < todoItems.children.length; i++) {
+        if (ids.has(Number(todoItems.children[i].attributes["data-id"].value))) {
+            todoItems.removeChild(todoItems.children[i]);
+        }
+    }
+}
+
 function createTodoComponent(description, id) {
     let div = document.createElement("div");
     div.classList.add("todo_item");
+    div.setAttribute("data-id", id);
 
     let wrapper = document.createElement("div");
     wrapper.classList.add("wrapper");
