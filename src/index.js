@@ -53,6 +53,7 @@ function deleteCompletedTodos() {
     for (let i = 0; i < todoItems.children.length; i++) {
         if (ids.has(Number(todoItems.children[i].attributes["data-id"].value))) {
             todoItems.removeChild(todoItems.children[i]);
+            i--;
         }
     }
 }
