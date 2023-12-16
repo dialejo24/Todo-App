@@ -1,19 +1,24 @@
 import './style.css';
 import iconMoonUrl from './images/icon-moon.svg';
 import iconCrossUrl from './images/icon-cross.svg';
-import { addTodoItem, removeTodoItem, changeTodoItemState, getTodosActive, clearCompleted } from './to-do';
+import { addTodoItem, removeTodoItem, changeTodoItemState, getTodosActive, clearCompletedTodos, getTodosCompleted } from './to-do';
 
 const toggleIcon = document.querySelector("img[alt='toggle']");
 const textInput = document.querySelector("input[type='text']");
 const todoItems = document.querySelector(".todo_items");
 const todosActive = document.querySelector(".amount");
 const removeCompletedTodos = document.querySelector(".clear_completed");
+const allTodos = document.querySelector(".all_todos");
+const activeTodos = document.querySelector(".active_todos");
+const completedTodos = document.querySelector(".completed_todos");
 
 textInput.addEventListener("keydown", addNewTodo);
 removeCompletedTodos.addEventListener("click", deleteCompletedTodos);
+allTodos.addEventListener("click", highlightFilter);
+activeTodos.addEventListener("click", highlightFilter);
+completedTodos.addEventListener("click", highlightFilter);
 
 setImageUrl(toggleIcon, iconMoonUrl);
-
 
 function setImageUrl(image, url) {
     image.src = url;
@@ -24,14 +29,14 @@ function addNewTodo(e) {
         let newTodoItemId = addTodoItem(e.target.value);
         createTodoComponent(e.target.value, newTodoItemId);
         e.target.value = "";
-        todosActive.textContent = getTodosActive();
+        updateTodosActiveCount();
     }
 }
 
 function deleteTodo(e) {
     removeTodoItem(e.target.attributes["data-id"].value);
     todoItems.removeChild(e.target.parentElement.parentElement);
-    todosActive.textContent = getTodosActive();
+    updateTodosActiveCount();
 }
 
 function updateTodoState(e) {
@@ -44,18 +49,58 @@ function updateTodoState(e) {
         e.target.className = "circle circle-unfilled";
         e.target.nextElementSibling.classList.remove("checked");
     }
-    todosActive.textContent = getTodosActive();
+    
+    updateTodosActiveCount();
     
 }
 
 function deleteCompletedTodos() {
-    let ids = clearCompleted();
+    let ids = clearCompletedTodos();
     for (let i = 0; i < todoItems.children.length; i++) {
         if (ids.has(Number(todoItems.children[i].attributes["data-id"].value))) {
             todoItems.removeChild(todoItems.children[i]);
             i--;
         }
     }
+}
+
+function highlightFilter(e) {
+    allTodos.className = "all_todos";
+    activeTodos.className = "active_todos";
+    completedTodos.className = "completed_todos";
+
+    if (e.target == allTodos) {
+        allTodos.className += " highlight_filter";
+        showAllTodos();
+
+    } else if (e.target == activeTodos) {
+        activeTodos.className += " highlight_filter";
+        filterTodos(getTodosActive());
+
+    } else {
+        completedTodos.className += " highlight_filter";
+        filterTodos(getTodosCompleted());
+    }
+}
+
+function filterTodos(ids) {
+    for (let i = 0; i < todoItems.children.length; i++) {
+        if (ids.has(Number(todoItems.children[i].attributes["data-id"].value))) {
+            todoItems.children[i].style.display = "grid";
+        } else {
+            todoItems.children[i].style.display = "none";
+        }
+    }
+}
+
+function showAllTodos() {
+    for (let i = 0; i < todoItems.children.length; i++) {
+        todoItems.children[i].style.display = "grid";
+    }
+}
+
+function updateTodosActiveCount() { //updates the count of active todos
+    todosActive.textContent = getTodosActive().size;
 }
 
 function createTodoComponent(description, id) {
