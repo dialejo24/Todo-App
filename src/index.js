@@ -1,22 +1,28 @@
 import './style.css';
 import iconMoonUrl from './images/icon-moon.svg';
 import iconCrossUrl from './images/icon-cross.svg';
+import iconSunUrl from './images/icon-sun.svg';
 import { addTodoItem, removeTodoItem, changeTodoItemState, getTodosActive, clearCompletedTodos, getTodosCompleted } from './to-do';
 
 const toggleIcon = document.querySelector("img[alt='toggle']");
 const textInput = document.querySelector("input[type='text']");
+const todoList = document.querySelector(".todo_list");
 const todoItems = document.querySelector(".todo_items");
 const todosActive = document.querySelector(".amount");
 const removeCompletedTodos = document.querySelector(".clear_completed");
 const allTodos = document.querySelector(".all_todos");
 const activeTodos = document.querySelector(".active_todos");
 const completedTodos = document.querySelector(".completed_todos");
+const todosFilter = document.querySelector(".todos_filter");
+const container = document.querySelector(".container");
+const inputCircle = document.querySelector(".input_circle");
 
 textInput.addEventListener("keydown", addNewTodo);
 removeCompletedTodos.addEventListener("click", deleteCompletedTodos);
 allTodos.addEventListener("click", highlightFilter);
 activeTodos.addEventListener("click", highlightFilter);
 completedTodos.addEventListener("click", highlightFilter);
+toggleIcon.addEventListener("click", changeMode);
 
 setImageUrl(toggleIcon, iconMoonUrl);
 
@@ -44,10 +50,12 @@ function updateTodoState(e) {
     if (todoState == "completed") {
         e.target.className = "circle circle-filled";
         e.target.nextElementSibling.classList.add("checked");
+        e.target.nextElementSibling.classList.add(toggleIcon.src == iconMoonUrl ? "light-checked" : "dark-checked");
         
     } else {
-        e.target.className = "circle circle-unfilled";
+        e.target.className = "circle " + (toggleIcon.src == iconMoonUrl ? "light-circle_unfilled" : "dark-circle_unfilled");
         e.target.nextElementSibling.classList.remove("checked");
+        e.target.nextElementSibling.classList.remove(toggleIcon.src == iconMoonUrl ? "light-checked" : "dark-checked");
     }
     
     updateTodosActiveCount();
@@ -65,9 +73,9 @@ function deleteCompletedTodos() {
 }
 
 function highlightFilter(e) {
-    allTodos.className = "all_todos";
-    activeTodos.className = "active_todos";
-    completedTodos.className = "completed_todos";
+    allTodos.className = "all_todos " + (toggleIcon.src == iconMoonUrl ? "light-filter" : "dark-filter");
+    activeTodos.className = "active_todos " + (toggleIcon.src == iconMoonUrl ? "light-filter" : "dark-filter");
+    completedTodos.className = "completed_todos " + (toggleIcon.src == iconMoonUrl ? "light-filter" : "dark-filter");
 
     if (e.target == allTodos) {
         allTodos.className += " highlight_filter";
@@ -103,22 +111,52 @@ function updateTodosActiveCount() { //updates the count of active todos
     todosActive.textContent = getTodosActive().size;
 }
 
+function changeMode() { //changes the page mode between dark and light
+    if (toggleIcon.src == iconMoonUrl) {
+        toggleIcon.src = iconSunUrl;
+        document.body.className = "body-dark";
+        textInput.className = "input-dark";
+        todoList.className = "todo_list background-dark shadow-dark";
+        todosFilter.className = "todos_filter background-dark shadow-dark";
+        container.className = "container bg-mobile-dark";
+        inputCircle.className = "input_circle dark_border";
+        removeCompletedTodos.className = "clear_completed dark-clear_completed";
+        changeHoverColor("dark");
+        changeTodoItemsAspect("dark");
+        
+    } else {
+        toggleIcon.src = iconMoonUrl;
+        document.body.className = "body-light";
+        textInput.className = "input-light";
+        todoList.className = "todo_list background-light shadow-light";
+        todosFilter.className = "todos_filter background-light shadow-light";
+        container.className = "container bg-mobile-light";
+        inputCircle.className = "input_circle light_border";
+        removeCompletedTodos.className = "clear_completed light-clear_completed";
+        changeHoverColor("light");
+        changeTodoItemsAspect("light");
+    }
+} 
+
 function createTodoComponent(description, id) {
     let div = document.createElement("div");
     div.classList.add("todo_item");
+    setColor(div, "light-border", "dark-border");
     div.setAttribute("data-id", id);
 
     let wrapper = document.createElement("div");
     wrapper.classList.add("wrapper");
 
     let circle = document.createElement("div");
-    circle.className = "circle circle-unfilled";
+    circle.classList.add("circle");
+    setColor(circle, "light-circle_unfilled", "dark-circle_unfilled");
     circle.setAttribute("data-id", id);
     circle.addEventListener("click", updateTodoState);
 
     let paragraph = document.createElement("p");
     paragraph.textContent = description;
     paragraph.classList.add("todo_description");
+    setColor(paragraph, "light-todo_description", "dark-todo_description");
 
     let cross = document.createElement("div");
     cross.classList.add("icon_cross");
@@ -141,4 +179,39 @@ function createTodoComponent(description, id) {
 
 function descriptionEmpty(description) {
     return description.length == 0;
+}
+
+function setColor(element, lightClass, darkClass) { //sets the color of a todoItem element according to dark and light mode
+    if (toggleIcon.src == iconMoonUrl) {
+        element.classList.add(lightClass);
+    } else {
+        element.classList.add(darkClass);
+    }
+    
+} 
+
+function changeTodoItemsAspect(mode) { //changes the aspect of every todo item between dark and light mode
+    for (let i = 0; i < todoItems.children.length; i++) {
+        let todoItem = todoItems.children[i];
+        todoItem.className = "todo_item " + (mode == 'dark' ? "dark-border" : "light-border");
+        let todoItemCircle = todoItem.firstElementChild.firstElementChild;
+        let todoItemDescription = todoItem.firstElementChild.lastElementChild;
+        todoItemDescription.className ="todo_description " + (mode == 'dark' ? "dark-todo_description" : "light-todo_description");
+        if (todoItemCircle.className.includes("unfilled")) {
+            todoItemCircle.className = "circle " + (mode == 'dark' ? "dark-circle_unfilled" : "light-circle_unfilled");
+            
+        } else {
+            todoItemDescription.classList.add("checked");
+            todoItemDescription.classList.add(mode == 'dark' ? "dark-checked" : "light-checked");
+        }
+        
+        
+    }
+} 
+
+function changeHoverColor(mode) { //changes de color when hovering a filter according to dark and light mode
+    [allTodos, activeTodos, completedTodos].forEach(filter => {
+        filter.classList.remove((mode == 'dark' ? "light-filter" : "dark-filter"));
+        filter.classList.add((mode == "dark" ? "dark-filter" : "light-filter"));
+    })
 }
