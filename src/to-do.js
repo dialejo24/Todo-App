@@ -91,6 +91,10 @@ function getDataFromLocalStorage(key) {
 
 function getTodosStoredInLocalStorage() {
   //returns the information of every todo stored in localStorage
+  if (!localStorage.getItem("todosList")) {
+    return [];
+  }
+  
   let todos = getDataFromLocalStorage("todosList");
   let information = [];
   todos.forEach((todo) => {
