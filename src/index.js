@@ -2,7 +2,8 @@ import './style.css';
 import iconMoonUrl from './images/icon-moon.svg';
 import iconCrossUrl from './images/icon-cross.svg';
 import iconSunUrl from './images/icon-sun.svg';
-import { addTodoItem, removeTodoItem, changeTodoItemState, getTodosActive, clearCompletedTodos, getTodosCompleted } from './to-do';
+import { addTodoItem, removeTodoItem, changeTodoItemState, getTodosActive, 
+clearCompletedTodos, getTodosCompleted, getTodosStoredInLocalStorage } from './to-do';
 
 const toggleIcon = document.querySelector("img[alt='toggle']");
 const textInput = document.querySelector("input[type='text']");
@@ -30,6 +31,15 @@ function setImageUrl(image, url) {
     image.src = url;
 }
 
+(function() {
+    let todosInLocalStorage = getTodosStoredInLocalStorage();
+    todosInLocalStorage.forEach(todo => {
+        let todoCircle = createTodoComponent(todo.description, todo.id).firstElementChild.firstElementChild;
+        switchTodoAspect(todoCircle, todo.state);
+    })
+    updateTodosActiveCount();
+})();
+
 function addNewTodo(e) {
     if (e.key == "Enter" && !descriptionEmpty(e.target.value)) {
         let newTodoItemId = addTodoItem(e.target.value);
@@ -47,17 +57,7 @@ function deleteTodo(e) {
 
 function updateTodoState(e) {
     let todoState = changeTodoItemState(e.target.attributes["data-id"].value);
-    if (todoState == "completed") {
-        e.target.className = "circle circle-filled";
-        e.target.nextElementSibling.classList.add("checked");
-        e.target.nextElementSibling.classList.add(toggleIcon.src == iconMoonUrl ? "light-checked" : "dark-checked");
-        
-    } else {
-        e.target.className = "circle " + (toggleIcon.src == iconMoonUrl ? "light-circle_unfilled" : "dark-circle_unfilled");
-        e.target.nextElementSibling.classList.remove("checked");
-        e.target.nextElementSibling.classList.remove(toggleIcon.src == iconMoonUrl ? "light-checked" : "dark-checked");
-    }
-    
+    switchTodoAspect(e.target, todoState);    
     updateTodosActiveCount();
     
 }
@@ -109,6 +109,19 @@ function showAllTodos() {
 
 function updateTodosActiveCount() { //updates the count of active todos
     todosActive.textContent = getTodosActive().size;
+}
+
+function switchTodoAspect(component, todoState) { //changes the aspect of a todo based on its state
+    if (todoState == "completed") {
+        component.className = "circle circle-filled";
+        component.nextElementSibling.classList.add("checked");
+        component.nextElementSibling.classList.add(toggleIcon.src == iconMoonUrl ? "light-checked" : "dark-checked");
+        
+    } else {
+        component.className = "circle " + (toggleIcon.src == iconMoonUrl ? "light-circle_unfilled" : "dark-circle_unfilled");
+        component.nextElementSibling.classList.remove("checked");
+        component.nextElementSibling.classList.remove(toggleIcon.src == iconMoonUrl ? "light-checked" : "dark-checked");
+    }
 }
 
 function changeMode() { //changes the page mode between dark and light
@@ -174,6 +187,8 @@ function createTodoComponent(description, id) {
     div.appendChild(cross);
 
     todoItems.appendChild(div);
+
+    return div;
 
 }
 

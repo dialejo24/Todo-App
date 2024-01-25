@@ -1,17 +1,15 @@
-export {createTodoItem};
-let id = 1;
+export {createTodoItem, changeState, getState, getDescription, getId};
+let id = localStorage.getItem("id") || 1;
 
 function createTodoItem(description) {
 
-    return {
+    let todoItem = {
         id : id++,
         description,
         state : "active",
-        changeState,
-        getState,
-        getDescription,
-        getId,
     };
+    localStorage.setItem("id", id);
+    return todoItem;
 }
 
 function changeState() {
